@@ -6,8 +6,6 @@
     --hover-color: #a9907e;
 }
 
-
-
 .nav-list {
     list-style: none;
     display: flex;
@@ -42,25 +40,25 @@ nav {
     background-color: var(--hover-color);
 }
 
-.sidebar-list {
+.actions {
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
-    padding: 0;
     text-decoration: none;
-}
-
-.sidebar-list li a {
-    color: var(--nav-text);
-    text-decoration: none;
-    font-size: 18px;
-    padding: 8px 16px;
-    transition: background-color 0.3s ease;
-}
-
-aside {
     background-color: rgb(100, 39, 11);
-    padding: 2px;
+    padding: 10px;
+}
+
+.actions button {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: medium;
+    font-weight: 200;
+}
+
+.actions button:hover {
+    background-color: #675d50;
+    color: #fff;
 }
