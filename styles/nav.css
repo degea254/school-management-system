@@ -1,0 +1,76 @@
+.tab-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-decoration: none;
+    background-color: rgb(100, 39, 11);
+    padding: 10px;
+    color: white;
+}
+
+
+.tab-btn {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 16px;
+    outline: none;
+    color: white;
+}
+
+
+.tab-btn.active {
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
+    font-weight: bold;
+}
+
+
+.tab-panel {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    background: #333;
+    padding: 0.8rem;
+    margin: 0;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background 0.2s;
+}
+
+.nav-list li a:hover {
+    background: #555;
+    border-radius: 4px;
+}
+
+/* Navigation active style - comment out if you don't want any visual change */
+.nav-list li a.active {
+    background: #007bff;
+    /* remove this line if you don't want a background */
+    border-radius: 4px;
+    font-weight: bold;
+    /* remove if you don't want bold text */
+}
+
+/* Prevent the default :active flash */
+.nav-list li a:active {
+    background: transparent;
+    color: white;
+}

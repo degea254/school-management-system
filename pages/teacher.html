@@ -1,26 +1,54 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="../styles/nav.css" />
+    <script src="../scripts/nav.js" defer></script>
+</head>
+
+<body>
     <nav>
-      <ul class="nav-list">
-        <li><a href="../home.html">HOME</a></li>
-        <li><a href="/pages/admin.html">ADMIN</a></li>
-        <li><a href="/pages/teacher.html">TEACHER</a></li>
-        <li><a href="/pages/student.html">STUDENT</a></li>
-        <li><a href="/pages/parent.html">PARENT</a></li>
-      </ul>
+        <ul class="nav-list">
+            <li><a class="active" href="/pages/home.html">HOME</a></li>
+            <li><a href="/pages/admin.html">ADMIN</a></li>
+            <li><a href="/pages/teacher.html">TEACHER</a></li>
+            <li><a href="/pages/student.html">STUDENT</a></li>
+            <li><a href="/pages/parent.html">PARENT</a></li>
+        </ul>
     </nav>
 
-    <div class="actions">
-      <button>take attendance</button>
-      <button>Add marks</button>
-      <button>Manage Timetable</button>
+    <div class="tab-menu">
+        <button class="tab-btn active" data-target="attendance">
+            take attendance
+        </button>
+        <button class="tab-btn" data-target="add-marks">Add marks</button>
+        <button class="tab-btn" data-target="manage-timetable">
+            Manage Timetable
+        </button>
     </div>
-  </body>
+
+    <div class="tab-content">
+
+        <div id="attendance" class="tab-panel active">
+            <h3>Attendance Section</h3>
+            <p>Take attendance for your students.</p>
+        </div>
+
+        <div id="add-marks" class="tab-panel">
+            <h3>Add Marks Section</h3>
+            <p>Manage your user account settings here.</p>
+        </div>
+
+        <div id="manage-timetable" class="tab-panel">
+            <h3>Manage Timetable Section</h3>
+            <p>Configure your class schedule and timetable.</p>
+        </div>
+
+    </div>
+</body>
+
 </html>

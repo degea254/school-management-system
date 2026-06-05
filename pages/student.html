@@ -1,26 +1,55 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="../home.html">HOME</a></li>
-        <li><a href="/pages/admin.html">ADMIN</a></li>
-        <li><a href="/pages/teacher.html">TEACHER</a></li>
-        <li><a href="/pages/student.html">STUDENT</a></li>
-        <li><a href="/pages/parent.html">PARENT</a></li>
-      </ul>
-    </nav>
 
-    <div class="actions">
-      <button>timetable</button>
-      <button>check attendance</button>
-      <button>check marks</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles/nav.css" />
+  <script src="../scripts/nav.js" defer></script>
+</head>
+
+<body>
+  <nav>
+    <ul class="nav-list">
+      <li><a class="active" href="/pages/home.html">HOME</a></li>
+      <li><a href="/pages/admin.html">ADMIN</a></li>
+      <li><a href="/pages/teacher.html">TEACHER</a></li>
+      <li><a href="/pages/student.html">STUDENT</a></li>
+      <li><a href="/pages/parent.html">PARENT</a></li>
+    </ul>
+  </nav>
+
+  <div class="tab-menu">
+
+    <button class="tab-btn active" data-target="timetable">timetable</button>
+
+    <button class="tab-btn" data-target="check-attendance">
+      check attendance
+    </button>
+
+    <button class="tab-btn" data-target="check-marks">check marks</button>
+
+  </div>
+
+  <div class="tab-content">
+
+    <div id="timetable" class="tab-panel active">
+      <h3>Timetable Section</h3>
+      <p>View your class timetable and schedule.</p>
     </div>
-  </body>
+
+    <div id="check-attendance" class="tab-panel">
+      <h3>Check Attendance Section</h3>
+      <p>Review attendance records for your students.</p>
+    </div>
+
+    <div id="check-marks" class="tab-panel">
+      <h3>Check Marks Section</h3>
+      <p>View and manage student marks and grades.</p>
+    </div>
+  </div>
+</body>
+
 </html>

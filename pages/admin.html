@@ -1,26 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="../home.html">HOME</a></li>
-        <li><a href="/pages/admin.html">ADMIN</a></li>
-        <li><a href="/pages/teacher.html">TEACHER</a></li>
-        <li><a href="/pages/student.html">STUDENT</a></li>
-        <li><a href="/pages/parent.html">PARENT</a></li>
-      </ul>
-    </nav>
 
-    <div class="actions">
-      <button>manage courses</button>
-      <button>manage teachers</button>
-      <button>manage students</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles/nav.css" />
+  <script src="../scripts/nav.js" defer></script>
+</head>
+
+<body>
+  <nav>
+    <ul class="nav-list">
+      <li><a class="active" href="/pages/home.html">HOME</a></li>
+      <li><a href="/pages/admin.html">ADMIN</a></li>
+      <li><a href="/pages/teacher.html">TEACHER</a></li>
+      <li><a href="/pages/student.html">STUDENT</a></li>
+      <li><a href="/pages/parent.html">PARENT</a></li>
+    </ul>
+  </nav>
+
+  <div class="tab-menu">
+    <button class="tab-btn active" data-target="manage-courses">Manage Courses</button>
+    <button class="tab-btn" data-target="manage-teachers">Manage Teachers</button>
+    <button class="tab-btn" data-target="manage-students">Manage Students</button>
+  </div>
+
+  <div class="tab-content">
+    <div id="manage-courses" class="tab-panel active">
+      <h3>Manage Courses Section</h3>
+      <p>Administer course offerings and curriculum.</p>
     </div>
-  </body>
+
+    <div id="manage-teachers" class="tab-panel">
+      <h3>Manage Teachers Section</h3>
+      <p>Oversee teacher assignments and schedules.</p>
+    </div>
+
+    <div id="manage-students" class="tab-panel">
+      <h3>Manage Students Section</h3>
+      <p>Handle student enrollment and records.</p>
+    </div>
+  </div>
+</body>
+
 </html>
