@@ -7,7 +7,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../styles/nav.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
   <script src="../scripts/nav.js" defer></script>
+  <script src="../scripts/admin.js" defer></script>
 </head>
 
 <body>
@@ -41,6 +43,46 @@
     <div id="manage-students" class="tab-panel">
       <h3>Manage Students Section</h3>
       <p>Handle student enrollment and records.</p>
+
+      <div>
+        <div class="admin-container">
+
+          <!-- LEFT: FORM -->
+          <div class="form-section">
+            <h2>Add Student</h2>
+
+            <form id="studentForm">
+              <input type="text" id="firstName" placeholder="First Name" required />
+              <input type="text" id="middleName" placeholder="Middle Name" required />
+              <input type="text" id="lastName" placeholder="Last Name" required />
+              <input type="text" id="adm" placeholder="Admission Number" required />
+              <select id="studentClass" required>
+                <option value="" disabled selected>Select Class</option>
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+                <option value="Grade 10">Grade 10</option>
+              </select>
+
+
+              <button type="submit">Add Student</button>
+            </form>
+          </div>
+
+          <!-- RIGHT: LIST -->
+          <div class="list-section">
+            <h2>Student List</h2>
+            <ul id="studentList"></ul>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </body>
