@@ -1,4 +1,3 @@
-
 // ===== ELEMENTS =====
 const form = document.getElementById("studentForm");
 const studentList = document.getElementById("studentList");
@@ -29,19 +28,36 @@ function saveToStorage() {
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    if (!admInput.value) {
+        alert("Admission number is required");
+        return;
+    }
+
     const studentData = {
         id: editMode ? editId : Date.now(),
         firstName: firstNameInput.value.trim(),
         middleName: middleNameInput.value.trim(),
         lastName: lastNameInput.value.trim(),
         adm: admInput.value.trim(),
-        class: classInput.value
+        class: classInput.value,
     };
+
+    // 2. CHECK DUPLICATE (ONLY FOR NEW STUDENTS)
+    if (!editMode) {
+        const isDuplicate = students.some(
+            (student) => student.adm === admInput.value.trim(),
+        );
+
+        if (isDuplicate) {
+            alert("A student with this admission number already exists.");
+            return;
+        }
+    }
 
     if (editMode) {
         // UPDATE EXISTING STUDENT
-        students = students.map(student =>
-            student.id === editId ? studentData : student
+        students = students.map((student) =>
+            student.id === editId ? studentData : student,
         );
 
         editMode = false;
@@ -54,16 +70,16 @@ form.addEventListener("submit", function (e) {
     }
 
     saveToStorage();
-
     form.reset();
     renderStudents();
+    updateAdmSuggestion();
 });
 
 // ===== RENDER LIST =====
 function renderStudents() {
     studentList.innerHTML = "";
 
-    students.forEach(student => {
+    students.forEach((student) => {
         const li = document.createElement("li");
 
         li.innerHTML = `
@@ -88,7 +104,7 @@ function renderStudents() {
 
 // ===== DELETE =====
 function deleteStudent(id) {
-    students = students.filter(student => student.id !== id);
+    students = students.filter((student) => student.id !== id);
 
     saveToStorage();
     renderStudents();
@@ -96,7 +112,7 @@ function deleteStudent(id) {
 
 // ===== EDIT MODE =====
 function editStudent(id) {
-    const student = students.find(s => s.id === id);
+    const student = students.find((s) => s.id === id);
 
     // fill form with existing data
     firstNameInput.value = student.firstName;
@@ -113,4 +129,23 @@ function editStudent(id) {
     form.querySelector("button").textContent = "Update Student";
 }
 
+//helper functions
+function getNextAdmNumber() {
+    if (students.length === 0) return 1;
+
+    const maxAdm = Math.max(...students.map((student) => Number(student.adm)));
+
+    return maxAdm + 1;
+}
+
+function updateAdmSuggestion() {
+    if (editMode) return; // don’t override when editing
+
+    admInput.value = getNextAdmNumber();
+}
+
+admInput.placeholder = "Next ADM: " + getNextAdmNumber();
+
+// ===== INITIAL RENDER =====
 renderStudents();
+updateAdmSuggestion();
