@@ -1,151 +1,211 @@
-// ===== ELEMENTS =====
-const form = document.getElementById("studentForm");
-const studentList = document.getElementById("studentList");
-
-const firstNameInput = document.getElementById("firstName");
-const middleNameInput = document.getElementById("middleName");
-const lastNameInput = document.getElementById("lastName");
-const admInput = document.getElementById("adm");
-const classInput = document.getElementById("studentClass");
-
-// ===== UPDATE STATE =====
-let editMode = false;
-let editId = null;
-
-// ===== DATA STORE =====
-
-const STORAGE_KEY = "students_data";
-
-let students = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-console.log("Loaded students:", students);
-
-function saveToStorage() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
-}
-
-// ===== SUBMIT (ADD OR UPDATE) =====
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    if (!admInput.value) {
-        alert("Admission number is required");
-        return;
+// ===== USER MODELS =====
+class User {
+    constructor({ id, firstName, middleName, lastName }) {
+        this.id = id || Date.now();
+        this.firstName = firstName.trim();
+        this.middleName = middleName.trim();
+        this.lastName = lastName.trim();
     }
 
-    const studentData = {
-        id: editMode ? editId : Date.now(),
-        firstName: firstNameInput.value.trim(),
-        middleName: middleNameInput.value.trim(),
-        lastName: lastNameInput.value.trim(),
-        adm: admInput.value.trim(),
-        class: classInput.value,
-    };
+    getFullName() {
+        return `${this.firstName} ${this.middleName} ${this.lastName}`;
+    }
 
-    // 2. CHECK DUPLICATE (ONLY FOR NEW STUDENTS)
-    if (!editMode) {
-        const isDuplicate = students.some(
-            (student) => student.adm === admInput.value.trim(),
-        );
+    toJSON() {
+        return {
+            id: this.id,
+            firstName: this.firstName,
+            middleName: this.middleName,
+            lastName: this.lastName,
+        };
+    }
+}
 
-        if (isDuplicate) {
+class Student extends User {
+    constructor({ id, firstName, middleName, lastName, adm, class: studentClass }) {
+        super({ id, firstName, middleName, lastName });
+        this.adm = String(adm).trim();
+        this.class = studentClass;
+    }
+
+    static fromStorage(studentData) {
+        return new Student(studentData);
+    }
+
+    toJSON() {
+        return {
+            ...super.toJSON(),
+            adm: this.adm,
+            class: this.class,
+        };
+    }
+}
+
+// ===== STUDENT MANAGEMENT APP =====
+class StudentManager {
+    constructor() {
+        this.storageKey = "students_data";
+        this.editMode = false;
+        this.editId = null;
+        this.students = this.loadStudents();
+
+        this.form = document.getElementById("studentForm");
+        this.studentList = document.getElementById("studentList");
+        this.firstNameInput = document.getElementById("firstName");
+        this.middleNameInput = document.getElementById("middleName");
+        this.lastNameInput = document.getElementById("lastName");
+        this.admInput = document.getElementById("adm");
+        this.classInput = document.getElementById("studentClass");
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    init() {
+        if (!this.form || !this.studentList) return;
+
+        this.form.addEventListener("submit", this.handleSubmit);
+        this.renderStudents();
+        this.updateAdmSuggestion();
+        this.updateAdmPlaceholder();
+    }
+
+    loadStudents() {
+        const storedStudents = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+        return storedStudents.map((studentData) => Student.fromStorage(studentData));
+    }
+
+    saveToStorage() {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.students));
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        if (!this.admInput.value) {
+            alert("Admission number is required");
+            return;
+        }
+
+        const studentData = this.getStudentDataFromForm();
+
+        if (!this.editMode && this.hasDuplicateAdm(studentData.adm)) {
             alert("A student with this admission number already exists.");
             return;
         }
+
+        if (this.editMode) {
+            this.updateStudent(studentData);
+        } else {
+            this.addStudent(studentData);
+        }
+
+        this.saveToStorage();
+        this.form.reset();
+        this.renderStudents();
+        this.updateAdmSuggestion();
+        this.updateAdmPlaceholder();
     }
 
-    if (editMode) {
-        // UPDATE EXISTING STUDENT
-        students = students.map((student) =>
-            student.id === editId ? studentData : student,
+    getStudentDataFromForm() {
+        return new Student({
+            id: this.editMode ? this.editId : Date.now(),
+            firstName: this.firstNameInput.value,
+            middleName: this.middleNameInput.value,
+            lastName: this.lastNameInput.value,
+            adm: this.admInput.value,
+            class: this.classInput.value,
+        });
+    }
+
+    hasDuplicateAdm(adm) {
+        return this.students.some((student) => student.adm === adm);
+    }
+
+    addStudent(student) {
+        this.students.push(student);
+    }
+
+    updateStudent(updatedStudent) {
+        this.students = this.students.map((student) =>
+            student.id === this.editId ? updatedStudent : student,
         );
 
-        editMode = false;
-        editId = null;
-
-        form.querySelector("button").textContent = "add Student";
-    } else {
-        // ADD NEW STUDENT
-        students.push(studentData);
+        this.editMode = false;
+        this.editId = null;
+        this.form.querySelector("button").textContent = "Add Student";
     }
 
-    saveToStorage();
-    form.reset();
-    renderStudents();
-    updateAdmSuggestion();
-});
+    deleteStudent(id) {
+        this.students = this.students.filter((student) => student.id !== id);
+        this.saveToStorage();
+        this.renderStudents();
+        this.updateAdmSuggestion();
+        this.updateAdmPlaceholder();
+    }
 
-// ===== RENDER LIST =====
-function renderStudents() {
-    studentList.innerHTML = "";
+    editStudent(id) {
+        const student = this.students.find((studentItem) => studentItem.id === id);
+        if (!student) return;
 
-    students.forEach((student) => {
-        const li = document.createElement("li");
+        this.firstNameInput.value = student.firstName;
+        this.middleNameInput.value = student.middleName;
+        this.lastNameInput.value = student.lastName;
+        this.admInput.value = student.adm;
+        this.classInput.value = student.class;
 
-        li.innerHTML = `
-            <div>
-                <strong>
-                    ${student.firstName} ${student.middleName} ${student.lastName}
-                </strong><br/>
-                <small>
-                    ADM: ${student.adm} | Class: ${student.class}
-                </small>
-            </div>
+        this.editMode = true;
+        this.editId = id;
+        this.form.querySelector("button").textContent = "Update Student";
+    }
 
-            <div>
-                <button onclick="editStudent(${student.id})">Edit</button>
-                <button onclick="deleteStudent(${student.id})">Delete</button>
-            </div>
-        `;
+    renderStudents() {
+        this.studentList.innerHTML = "";
 
-        studentList.appendChild(li);
-    });
+        this.students.forEach((student) => {
+            const li = document.createElement("li");
+
+            li.innerHTML = `
+                <div>
+                    <strong>${student.getFullName()}</strong><br/>
+                    <small>ADM: ${student.adm} | Class: ${student.class}</small>
+                </div>
+
+                <div>
+                    <button onclick="editStudent(${student.id})">Edit</button>
+                    <button onclick="deleteStudent(${student.id})">Delete</button>
+                </div>
+            `;
+
+            this.studentList.appendChild(li);
+        });
+    }
+
+    getNextAdmNumber() {
+        if (this.students.length === 0) return 1;
+
+        const admissionNumbers = this.students.map((student) => Number(student.adm));
+        return Math.max(...admissionNumbers) + 1;
+    }
+
+    updateAdmSuggestion() {
+        if (this.editMode) return;
+
+        this.admInput.value = this.getNextAdmNumber();
+    }
+
+    updateAdmPlaceholder() {
+        this.admInput.placeholder = `Next ADM: ${this.getNextAdmNumber()}`;
+    }
 }
 
-// ===== DELETE =====
-function deleteStudent(id) {
-    students = students.filter((student) => student.id !== id);
+const studentManager = new StudentManager();
+studentManager.init();
 
-    saveToStorage();
-    renderStudents();
-}
-
-// ===== EDIT MODE =====
+// Keep the existing inline HTML button capabilities working.
 function editStudent(id) {
-    const student = students.find((s) => s.id === id);
-
-    // fill form with existing data
-    firstNameInput.value = student.firstName;
-    middleNameInput.value = student.middleName;
-    lastNameInput.value = student.lastName;
-    admInput.value = student.adm;
-    classInput.value = student.class;
-
-    // switch to edit mode
-    editMode = true;
-    editId = id;
-
-    // change button text (optional polish)
-    form.querySelector("button").textContent = "Update Student";
+    studentManager.editStudent(id);
 }
 
-//helper functions
-function getNextAdmNumber() {
-    if (students.length === 0) return 1;
-
-    const maxAdm = Math.max(...students.map((student) => Number(student.adm)));
-
-    return maxAdm + 1;
+function deleteStudent(id) {
+    studentManager.deleteStudent(id);
 }
-
-function updateAdmSuggestion() {
-    if (editMode) return; // don’t override when editing
-
-    admInput.value = getNextAdmNumber();
-}
-
-admInput.placeholder = "Next ADM: " + getNextAdmNumber();
-
-// ===== INITIAL RENDER =====
-renderStudents();
-updateAdmSuggestion();
