@@ -1,5 +1,9 @@
+
+
+
+
 // ===== USER MODELS =====
-class User {
+export class User {
     constructor({ id, firstName, middleName, lastName }) {
         this.id = id || Date.now();
         this.firstName = firstName.trim();
@@ -21,7 +25,7 @@ class User {
     }
 }
 
-class Student extends User {
+export class Student extends User {
     constructor({ id, firstName, middleName, lastName, adm, class: studentClass }) {
         super({ id, firstName, middleName, lastName });
         this.adm = String(adm).trim();
@@ -42,7 +46,7 @@ class Student extends User {
 }
 
 // ===== STUDENT MANAGEMENT APP =====
-class StudentManager {
+export class StudentManager {
     constructor() {
         this.storageKey = "students_data";
         this.editMode = false;

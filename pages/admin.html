@@ -24,65 +24,281 @@
   </nav>
 
   <div class="tab-menu">
-    <button class="tab-btn active" data-target="manage-courses">Manage Courses</button>
-    <button class="tab-btn" data-target="manage-teachers">Manage Teachers</button>
-    <button class="tab-btn" data-target="manage-students">Manage Students</button>
+    <button class="tab-btn " data-target="manage-courses">
+      Manage Courses
+    </button>
+    <button class="tab-btn active" data-target="manage-teachers">
+      Manage Teachers
+    </button>
+    <button class="tab-btn" data-target="manage-students">
+      Manage Students
+    </button>
   </div>
 
   <div class="tab-content">
-    <div id="manage-courses" class="tab-panel active">
-      <h3>Manage Courses Section</h3>
-      <p>Administer course offerings and curriculum.</p>
-    </div>
-
-    <div id="manage-teachers" class="tab-panel">
-      <h3>Manage Teachers Section</h3>
-      <p>Oversee teacher assignments and schedules.</p>
-    </div>
-
     <div id="manage-students" class="tab-panel">
       <h3>Manage Students Section</h3>
       <p>Handle student enrollment and records.</p>
 
-      <div>
-        <div class="admin-container">
 
-          <!-- LEFT: FORM -->
-          <div class="form-section">
-            <h2>Add Student</h2>
+      <div class="admin-container">
+        <!-- LEFT: FORM -->
+        <div class="form-section">
+          <h2>Add Student</h2>
 
-            <form id="studentForm">
-              <input type="text" id="firstName" placeholder="First Name" required />
-              <input type="text" id="middleName" placeholder="Middle Name" required />
-              <input type="text" id="lastName" placeholder="Last Name" required />
-              <input type="number" id="adm" placeholder="Admission Number" required min="1" step="1" />
-              <select id="studentClass" required>
-                <option value="" disabled selected>Select Class</option>
-                <option value="Grade 1">Grade 1</option>
-                <option value="Grade 2">Grade 2</option>
-                <option value="Grade 3">Grade 3</option>
-                <option value="Grade 4">Grade 4</option>
-                <option value="Grade 5">Grade 5</option>
-                <option value="Grade 6">Grade 6</option>
-                <option value="Grade 7">Grade 7</option>
-                <option value="Grade 8">Grade 8</option>
-                <option value="Grade 9">Grade 9</option>
-                <option value="Grade 10">Grade 10</option>
-              </select>
+          <form id="studentForm">
 
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name" required />
 
-              <button type="submit">Add Student</button>
-            </form>
-          </div>
+            <label for="middleName">Middle Name</label>
+            <input type="text" id="middleName" placeholder="Middle Name" required />
 
-          <!-- RIGHT: LIST -->
-          <div class="list-section">
-            <h2>Student List</h2>
-            <ul id="studentList"></ul>
-          </div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name" required />
 
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" placeholder="Date of Birth" required min="2000-01-01" max="2023-12-31" />
+
+            <label for="adm">Admission Number</label>
+            <input type="number" id="adm" placeholder="Admission Number" required min="1" step="1" />
+
+            <label for="studentClass">Class</label>
+            <select id="studentClass" required>
+              <option value="" disabled selected>Select Class</option>
+              <option value="Grade 1">Grade 1</option>
+              <option value="Grade 2">Grade 2</option>
+              <option value="Grade 3">Grade 3</option>
+              <option value="Grade 4">Grade 4</option>
+              <option value="Grade 5">Grade 5</option>
+              <option value="Grade 6">Grade 6</option>
+              <option value="Grade 7">Grade 7</option>
+              <option value="Grade 8">Grade 8</option>
+              <option value="Grade 9">Grade 9</option>
+              <option value="Grade 10">Grade 10</option>
+            </select>
+
+            <button type="submit">Add Student</button>
+          </form>
+        </div>
+
+        <!-- RIGHT: LIST -->
+        <div class="list-section">
+          <h2>Student List</h2>
+          <ul id="studentList"></ul>
         </div>
       </div>
+    </div>
+
+    <div id="manage-courses" class="tab-panel ">
+      <h3>Manage Courses Section</h3>
+      <p>Administer course offerings and curriculum.</p>
+    </div>
+
+    <div id="manage-teachers" class="tab-panel active">
+      <h3>Manage Teachers Section</h3>
+      <p>Oversee teacher assignments and schedules.</p>
+
+
+      <div class="admin-container">
+        <!-- LEFT: FORM -->
+        <div class="form-section">
+          <h2>ADD TEACHER</h2>
+
+          <form id="teacherForm">
+            <input type="text" id="teacherFirstName" placeholder="First Name" required />
+            <input type="text" id="teacherMiddleName" placeholder="Middle Name" required />
+            <input type="text" id="teacherLastName" placeholder="Last Name" required />
+
+            <input type="email" id="email" placeholder="Email Address" required />
+
+            <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" />
+
+            <input type="date" id="joinDate" placeholder="Join Date" required />
+
+            <input type="number" id="teacherID" placeholder="ID number" required min="20000000" step="1" />
+
+            <div class="subjects-group">
+              <p>Subjects</p>
+
+              <label>
+                <input type="checkbox" name="subjects" value="Mathematics" />
+                Mathematics
+              </label>
+
+              <label>
+                <input type="checkbox" name="subjects" value="English" />
+                English
+              </label>
+
+              <label>
+                <input type="checkbox" name="subjects" value="Kiswahili" />
+                Kiswahili
+              </label>
+
+              <label>
+                <input type="checkbox" name="subjects" value="Biology" />
+                Biology
+              </label>
+
+              <label>
+                <input type="checkbox" name="subjects" value="Chemistry" />
+                Chemistry
+              </label>
+
+              <label>
+                <input type="checkbox" name="subjects" value="Physics" />
+                Physics
+              </label>
+            </div>
+
+            <div class="classes-group">
+              <p>Classes Assigned</p>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 1" />
+                Grade 1
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 2" />
+                Grade 2
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 3" />
+                Grade 3
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 4" />
+                Grade 4
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 5" />
+                Grade 5
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 6" />
+                Grade 6
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 7" />
+                Grade 7
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 8" />
+                Grade 8
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 9" />
+                Grade 9
+              </label>
+
+              <label>
+                <input type="checkbox" name="classesAssigned" value="Grade 10" />
+                Grade 10
+              </label>
+            </div>
+
+            <div class="status-group">
+              <p>Status</p>
+
+              <label>
+                <input type="radio" name="status" value="active" checked />
+                Active
+              </label>
+
+              <label>
+                <input type="radio" name="status" value="suspended" />
+                Suspended
+              </label>
+
+              <label>
+                <input type="radio" name="status" value="left" />
+                Left
+              </label>
+            </div>
+
+            <label for="salaryGrade">Salary Grade / Role</label>
+
+            <select id="salaryGrade" required>
+              <option value="" disabled selected>
+                Select Salary Grade
+              </option>
+
+              <optgroup label="Secondary Classroom Teachers">
+                <option value="C1|Secondary Teacher III|Ksh 35,336 - Ksh 47,261">
+                  Grade C1 - Secondary Teacher III: Ksh 35,336 - Ksh 47,261
+                </option>
+
+                <option value="C2|Secondary Teacher II|Ksh 41,420 - Ksh 57,230">
+                  Grade C2 - Secondary Teacher II: Ksh 41,420 - Ksh 57,230
+                </option>
+
+                <option value="C3|Secondary Teacher I|Ksh 49,781 - Ksh 66,233">
+                  Grade C3 - Secondary Teacher I: Ksh 49,781 - Ksh 66,233
+                </option>
+              </optgroup>
+
+              <optgroup label="Senior Masters">
+                <option value="C4|Senior Master IV|Ksh 58,585 - Ksh 77,120">
+                  Grade C4 - Senior Master IV: Ksh 58,585 - Ksh 77,120
+                </option>
+
+                <option value="C5|Senior Master III|Ksh 69,745 - Ksh 96,132">
+                  Grade C5 - Senior Master III: Ksh 69,745 - Ksh 96,132
+                </option>
+
+                <option value="D1|Senior Master II|Ksh 80,984 - Ksh 99,272">
+                  Grade D1 - Senior Master II: Ksh 80,984 - Ksh 99,272
+                </option>
+
+                <option value="D2|Senior Master I|Ksh 95,271 - Ksh 116,012">
+                  Grade D2 - Senior Master I: Ksh 95,271 - Ksh 116,012
+                </option>
+              </optgroup>
+
+              <optgroup label="Deputy Principals & Principals">
+                <option value="D1|Deputy Principal III|Ksh 80,984 - Ksh 99,272">
+                  Grade D1 - Deputy Principal III: Ksh 80,984 - Ksh 99,272
+                </option>
+
+                <option value="D2|Deputy Principal II|Ksh 95,271 - Ksh 116,012">
+                  Grade D2 - Deputy Principal II: Ksh 95,271 - Ksh 116,012
+                </option>
+
+                <option value="D3|Principal / Deputy Principal I|Ksh 109,224 - Ksh 133,347">
+                  Grade D3 - Principal / Deputy Principal I: Ksh 109,224 -
+                  Ksh 133,347
+                </option>
+
+                <option value="D4|Senior Principal|Ksh 121,789 - Ksh 150,675">
+                  Grade D4 - Senior Principal: Ksh 121,789 - Ksh 150,675
+                </option>
+
+                <option value="D5|Chief Principal|Ksh 135,321 - Ksh 167,415">
+                  Grade D5 - Chief Principal: Ksh 135,321 - Ksh 167,415
+                </option>
+              </optgroup>
+            </select>
+
+            <button type="submit">Add Teacher</button>
+          </form>
+        </div>
+
+        <!-- RIGHT: LIST -->
+        <div class="list-section">
+          <h2>Teacher List</h2>
+          <ul id="teacherList"></ul>
+        </div>
+      </div>
+
     </div>
   </div>
 </body>
