@@ -106,16 +106,24 @@
           <h2>ADD TEACHER</h2>
 
           <form id="teacherForm">
+
+            <label for="teacherFirstName">First Name</label>
             <input type="text" id="teacherFirstName" placeholder="First Name" required />
+            <label for="teacherMiddleName">Middle Name</label>
             <input type="text" id="teacherMiddleName" placeholder="Middle Name" required />
+            <label for="teacherLastName">Last Name</label>
             <input type="text" id="teacherLastName" placeholder="Last Name" required />
 
+            <label for="email">Email Address</label>
             <input type="email" id="email" placeholder="Email Address" required />
 
+            <label for="phone">Phone Number</label>
             <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" />
 
+            <label for="joinDate">Join Date</label>
             <input type="date" id="joinDate" placeholder="Join Date" required />
 
+            <label for="teacherID">ID number</label>
             <input type="number" id="teacherID" placeholder="ID number" required min="20000000" step="1" />
 
             <div class="subjects-group">
