@@ -1,34 +1,69 @@
-/* ===== GLOBAL ===== */
-body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #e5e7eb;
-    margin: 0;
+/* =========================
+   DESIGN SYSTEM (TOKENS)
+========================= */
+:root {
+    --bg: #0f172a;
+    --panel: #111827;
+    --panel-soft: rgba(17, 24, 39, 0.85);
+    --border: #1f2937;
+    --border-soft: #374151;
+
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+
+    --accent: #0288aa;
+    --accent-2: #22d3ee;
+
+    --danger: #ef4444;
+    --danger-dark: #dc2626;
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
 }
 
+/* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
 
-/* ===== TAB MENU ===== */
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* =========================
+   TAB MENU
+========================= */
 .tab-menu {
     display: flex;
     gap: 10px;
     padding: 15px 40px;
-    justify-content: flex-start;
-    background: #111827;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    background: var(--panel);
     position: sticky;
     top: 0;
     z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    flex-wrap: wrap;
 }
 
 .tab-btn {
     padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid #1f2937;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
     background: #1f2937;
     color: #cbd5e1;
-    cursor: pointer;
     font-weight: 600;
     transition: 0.2s;
+    cursor: pointer;
 }
 
 .tab-btn:hover {
@@ -36,157 +71,411 @@ body {
 }
 
 .tab-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    background: var(--primary);
+    border-color: var(--primary);
     color: white;
 }
 
-/* ===== TAB PANELS ===== */
+/* =========================
+   TAB PANELS
+========================= */
 .tab-panel {
     display: none;
     padding: 25px 40px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: 0.25s ease;
 }
 
 .tab-panel.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* ===== LAYOUT ===== */
+/* =========================
+   LAYOUT
+========================= */
 .admin-container {
     display: flex;
-    gap: 50px;
-    justify-content: flex-start;
-    align-items: flex-start;
+    gap: 40px;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
-/* ===== LEFT FORM PANEL (BIG CONTROL BLOCK) ===== */
 .form-section {
     flex: 0 0 560px;
     max-width: 560px;
 }
 
-/* ===== RIGHT LIST PANEL ===== */
 .list-section {
     flex: 1;
     min-width: 320px;
 }
 
-/* ===== HEADINGS ===== */
-.form-section h2,
-.list-section h2 {
+h2 {
+    color: #f1f5f9;
     font-size: 22px;
     margin-bottom: 20px;
-    color: #f1f5f9;
 }
 
-/* ===== FORM CARD ===== */
-form#studentForm {
-    padding: 40px;
-    border-radius: 18px;
-
-    background: #111827;
-    border: 1px solid #1f2937;
-
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+/* =========================
+   BASE FORM STYLES
+========================= */
+form {
+    padding: 35px;
+    border-radius: var(--radius-xl);
+    background: var(--panel);
+    border: 1px solid var(--border);
 }
 
-/* ===== INPUTS + SELECT ===== */
-form#studentForm input,
-form#studentForm select {
+input,
+select,
+textarea {
     width: 100%;
     padding: 14px;
     margin: 10px 0;
-
-    border-radius: 10px;
-    border: 1px solid #374151;
-
-    background: #0f172a;
-    color: #e5e7eb;
-
-    outline: none;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-soft);
+    background: var(--bg);
+    color: var(--text);
     font-size: 15px;
-
     transition: 0.2s;
 }
 
-form#studentForm input::placeholder {
-    color: #64748b;
-}
-
-form#studentForm input:focus,
-form#studentForm select:focus {
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
     border-color: #38bdf8;
     box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
 
-/* ===== BUTTON ===== */
-form#studentForm button {
+/* primary button (generic) */
+.primary-btn {
     width: 100%;
     padding: 14px;
     margin-top: 12px;
-
     border: none;
-    border-radius: 10px;
-
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
-
-    font-size: 15px;
     font-weight: 600;
+    cursor: pointer;
+}
 
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+}
+
+/* =========================
+   TEACHER FORM – REDUCED HEIGHT & SCROLLABLE (REQUESTED)
+========================= */
+#teacherForm {
+    background: var(--panel-soft);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 28px;
+
+    /* 🔥 REDUCED HEIGHT + SCROLLABLE 🔥 */
+    max-height: 800px;
+    overflow-y: auto;
+    padding: 28px 28px 32px 28px;
+    transition: all 0.2s;
+    scrollbar-width: thin;
+}
+
+/* nice custom scroll inside teacher form */
+#teacherForm::-webkit-scrollbar {
+    width: 6px;
+}
+
+#teacherForm::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+#teacherForm::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 8px;
+}
+
+/* preserve internal spacing */
+#teacherForm .form-group {
+    margin-bottom: 0.75rem;
+}
+
+/* =========================
+   STUDENT FORM (unchanged, normal height)
+========================= */
+#studentForm {
+    background: var(--panel);
+    border: 1px solid var(--border);
+}
+
+/* =========================
+   GROUP SECTIONS (teacher specific)
+========================= */
+.subjects-group,
+.classes-group,
+.status-group {
+    background: rgba(10, 10, 20, 0.6);
+    border: 1px solid #2d2d44;
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    margin: 1.2rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.subjects-group p,
+.classes-group p,
+.status-group p {
+    width: 100%;
+    font-weight: 600;
+    color: #c4b5fd;
+    margin: 0 0 6px 0;
+}
+
+/* rectangular label tiles */
+.subjects-group label,
+.classes-group label,
+.status-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 0px;
+    border: 1px solid #3a3a5a;
+    background: rgba(10, 10, 20, 0.35);
+    cursor: pointer;
+    transition: 0.2s ease;
+    color: #cbd5e1;
+}
+
+.subjects-group label:hover,
+.classes-group label:hover,
+.status-group label:hover {
+    border-color: var(--accent);
+    background: rgba(168, 85, 247, 0.12);
+    transform: translateY(-1px);
+}
+
+/* custom checkbox / radio */
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #5b5b8a;
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background: linear-gradient(145deg, #1d6069, var(--accent));
+    border-color: var(--accent);
+}
+
+input[type="checkbox"]:checked::after,
+input[type="radio"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    left: 3px;
+    top: -2px;
+}
+
+input[type="radio"]:checked::after {
+    content: "•";
+    font-size: 16px;
+    left: 4px;
+    top: -2px;
+}
+
+/* submit & action buttons */
+#studentForm button[type="submit"],
+#teacherForm button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 24px;
+    border: none;
+    border-radius: 5px;
+    background: #3b82f6;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(75, 132, 224, 0.3);
+}
+
+#studentForm button[type="submit"]:hover,
+#teacherForm button[type="submit"]:hover {
+    background: #0d275f;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(86, 123, 184, 0.5);
+}
+
+.reset-btn {
+    background: #2d3748;
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    border: none;
+    color: #e2e8f0;
     cursor: pointer;
     transition: 0.2s;
 }
 
-form#studentForm button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(59, 130, 246, 0.3);
+.reset-btn:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
 }
 
-/* ===== STUDENT LIST ===== */
-#studentList {
+/* list styles */
+#studentList,
+#teacherList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#studentList li {
-    background: #111827;
-    border: 1px solid #1f2937;
-
-    padding: 14px 16px;
-    margin-bottom: 12px;
-
-    border-radius: 12px;
-
+#studentList li,
+#teacherList li {
+    background: var(--panel-soft);
+    border: 1px solid #2d2d44;
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    transition: 0.2s;
+    flex-wrap: wrap;
+}
 
+#studentList li:hover,
+#teacherList li:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.info {
+    flex: 2;
+}
+
+.info strong {
+    color: #facc15;
+}
+
+.info p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.actions button {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    cursor: pointer;
     transition: 0.2s;
 }
 
-#studentList li:hover {
-    transform: translateY(-2px);
-    border-color: #334155;
+.actions button.edit {
+    background: #3b82f6;
+    color: white;
 }
 
-/* ===== DELETE BUTTON ===== */
-#studentList button {
+.actions button.edit:hover {
+    background: #123277;
+    transform: scale(0.96);
+}
+
+.actions button.delete {
     background: #ef4444;
     color: white;
-
-    border: none;
-    padding: 6px 10px;
-    border-radius: 8px;
-
-    font-size: 12px;
-    cursor: pointer;
-
-    transition: 0.2s;
 }
 
-#studentList button:hover {
-    background: #dc2626;
+.actions button.delete:hover {
+    background: #5a0c0c;
+    transform: scale(0.96);
+}
+
+/* scrollbar global */
+#teacherList,
+#studentList {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+#teacherList::-webkit-scrollbar,
+#studentList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#teacherList::-webkit-scrollbar-thumb,
+#studentList::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .form-section {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .tab-panel {
+        padding: 20px;
+    }
+
+    .tab-menu {
+        padding: 12px 20px;
+    }
+
+    #teacherForm {
+        max-height: 440px;
+    }
+}
+
+:focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+}
+
+.badge {
+    background: #1e293b;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    margin-right: 5px;
 }
