@@ -3,7 +3,7 @@
 
 
 // ===== USER MODELS =====
-export class User {
+ class User {
     constructor({ id, firstName, middleName, lastName }) {
         this.id = id || Date.now();
         this.firstName = firstName.trim();
@@ -25,9 +25,10 @@ export class User {
     }
 }
 
-export class Student extends User {
-    constructor({ id, firstName, middleName, lastName, adm, class: studentClass }) {
+ class Student extends User {
+    constructor({ id, firstName, middleName, lastName, dob, adm, class: studentClass }) {
         super({ id, firstName, middleName, lastName });
+        this.dob = dob;
         this.adm = String(adm).trim();
         this.class = studentClass;
     }
@@ -39,6 +40,7 @@ export class Student extends User {
     toJSON() {
         return {
             ...super.toJSON(),
+            dob: this.dob,
             adm: this.adm,
             class: this.class,
         };
@@ -46,7 +48,7 @@ export class Student extends User {
 }
 
 // ===== STUDENT MANAGEMENT APP =====
-export class StudentManager {
+ class StudentManager {
     constructor() {
         this.storageKey = "students_data";
         this.editMode = false;
@@ -58,6 +60,7 @@ export class StudentManager {
         this.firstNameInput = document.getElementById("firstName");
         this.middleNameInput = document.getElementById("middleName");
         this.lastNameInput = document.getElementById("lastName");
+        this.dobInput = document.getElementById("dob");
         this.admInput = document.getElementById("adm");
         this.classInput = document.getElementById("studentClass");
 
@@ -116,6 +119,7 @@ export class StudentManager {
             firstName: this.firstNameInput.value,
             middleName: this.middleNameInput.value,
             lastName: this.lastNameInput.value,
+            dob: this.dobInput.value,
             adm: this.admInput.value,
             class: this.classInput.value,
         });
@@ -154,6 +158,7 @@ export class StudentManager {
         this.firstNameInput.value = student.firstName;
         this.middleNameInput.value = student.middleName;
         this.lastNameInput.value = student.lastName;
+        this.dobInput.value = student.dob;
         this.admInput.value = student.adm;
         this.classInput.value = student.class;
 
@@ -171,7 +176,7 @@ export class StudentManager {
             li.innerHTML = `
                 <div>
                     <strong>${student.getFullName()}</strong><br/>
-                    <small>ADM: ${student.adm} | Class: ${student.class}</small>
+                    <small>DOB: ${student.dob} | ADM: ${student.adm} | Class: ${student.class}</small>
                 </div>
 
                 <div>
