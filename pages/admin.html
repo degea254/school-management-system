@@ -24,8 +24,8 @@
   </nav>
 
   <div class="tab-menu">
-    <button class="tab-btn " data-target="manage-courses">
-      Manage Courses
+    <button class="tab-btn " data-target="manage-subjects">
+      Manage Subjects
     </button>
     <button class="tab-btn active" data-target="manage-teachers">
       Manage Teachers
@@ -77,6 +77,16 @@
               <option value="Grade 9">Grade 9</option>
               <option value="Grade 10">Grade 10</option>
             </select>
+
+            <div class="subjects-group">
+              <p>Subjects</p>
+              <label><input type="checkbox" name="studentSubjects" value="Mathematics"> Mathematics</label>
+              <label><input type="checkbox" name="studentSubjects" value="English"> English</label>
+              <label><input type="checkbox" name="studentSubjects" value="Kiswahili"> Kiswahili</label>
+              <label><input type="checkbox" name="studentSubjects" value="Biology"> Biology</label>
+              <label><input type="checkbox" name="studentSubjects" value="Chemistry"> Chemistry</label>
+              <label><input type="checkbox" name="studentSubjects" value="Physics"> Physics</label>
+            </div>
 
             <button type="submit">Add Student</button>
           </form>

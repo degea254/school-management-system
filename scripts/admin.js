@@ -30,11 +30,13 @@ class Student extends User {
         dob,
         adm,
         class: studentClass,
+        subjects = [],
     }) {
         super({ id, firstName, middleName, lastName });
         this.dob = dob;
         this.adm = String(adm).trim();
         this.class = studentClass;
+        this.subjects = subjects || [];
     }
 
     static fromStorage(studentData) {
@@ -47,6 +49,7 @@ class Student extends User {
             dob: this.dob,
             adm: this.adm,
             class: this.class,
+            subjects: this.subjects,
         };
     }
 }
@@ -363,11 +366,25 @@ class StudentManager {
             dob: this.dobInput.value,
             adm: this.admInput.value,
             class: this.classInput.value,
+            subjects: this.getCheckedValues("studentSubjects"),
         });
     }
 
     hasDuplicateAdm(adm) {
         return this.students.some((student) => student.adm === adm);
+    }
+
+    getCheckedValues(name) {
+        return [...this.form.querySelectorAll(`input[name="${name}"]:checked`)].map(
+            (input) => input.value,
+        );
+    }
+
+    setCheckedValues(name, values) {
+        const selectedValues = values || [];
+        this.form.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
+            input.checked = selectedValues.includes(input.value);
+        });
     }
 
     addStudent(student) {
@@ -402,6 +419,7 @@ class StudentManager {
         this.dobInput.value = student.dob;
         this.admInput.value = student.adm;
         this.classInput.value = student.class;
+        this.setCheckedValues("studentSubjects", student.subjects);
 
         this.editMode = true;
         this.editId = id;
@@ -417,7 +435,8 @@ class StudentManager {
             li.innerHTML = `
                 <div>
                     <strong>${student.getFullName()}</strong><br/>
-                    <small>DOB: ${student.dob} | ADM: ${student.adm} | Class: ${student.class}</small>
+                    <small>DOB: ${student.dob} | ADM: ${student.adm} | Class: ${student.class}</small><br/>
+                    <small>Subjects: ${student.subjects.length ? student.subjects.join(", ") : "None"}</small>
                 </div>
 
                 <div>
