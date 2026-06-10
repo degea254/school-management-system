@@ -479,3 +479,39 @@ input[type="radio"]:checked::after {
     font-size: 0.7rem;
     margin-right: 5px;
 }
+
+/* Subject management UI helpers */
+.subject-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#subjectList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#subjectList li {
+    background: var(--panel-soft);
+    border: 1px solid #2d2d44;
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    transition: 0.2s;
+    flex-wrap: wrap;
+}
+
+#subjectList {
+    max-height: 60vh;
+    overflow-y: auto;
+}
