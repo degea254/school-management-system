@@ -24,7 +24,9 @@ class User {
 class Subject {
     constructor({ id, department, subjectName }) {
         this.id = id || Date.now();
-        this.department = department.trim();
+        this.department = Array.isArray(department)
+            ? department
+            : [String(department || "").trim()].filter(Boolean);
         this.subjectName = subjectName.trim();
     }
 
@@ -48,7 +50,6 @@ class SubjectManager {
 
         this.form = document.getElementById("subjectForm");
         this.subjectList = document.getElementById("subjectList");
-        this.departmentInput = document.getElementById("department");
         this.subjectNameInput = document.getElementById("subjectName");
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,6 +78,11 @@ class SubjectManager {
 
         const subjectData = this.getSubjectDataFromForm();
 
+        if (subjectData.department.length === 0) {
+            alert("Please select at least one department.");
+            return;
+        }
+
         if (this.editMode) {
             this.updateSubject(subjectData);
         } else {
@@ -95,10 +101,11 @@ class SubjectManager {
         this.subjects.push(subject);
         this.saveToStorage();
         this.renderSubjects();
+        this.updateTeacherSubjectOptions();
     }
 
 
-    pdateSubject(updatedSubject) {
+    updateSubject(updatedSubject) {
         this.subjects = this.subjects.map((subject) =>
             subject.id === this.editId ? updatedSubject : subject,
         );
@@ -108,6 +115,7 @@ class SubjectManager {
         this.form.querySelector("button").textContent = "Add Subject";
         this.saveToStorage();
         this.renderSubjects();
+        this.updateTeacherSubjectOptions();
     }
 
 
@@ -115,6 +123,7 @@ class SubjectManager {
         this.subjects = this.subjects.filter((subject) => subject.id !== id);
         this.saveToStorage();
         this.renderSubjects();
+        this.updateTeacherSubjectOptions();
     }
 
     editSubject(id) {
@@ -123,7 +132,7 @@ class SubjectManager {
 
         this.editMode = true;
         this.editId = id;
-        this.departmentInput.value = subject.department;
+        this.setCheckedValues("departments", subject.department);
         this.subjectNameInput.value = subject.subjectName;
 
         this.form.querySelector("button").textContent = "Update Subject";
@@ -132,8 +141,21 @@ class SubjectManager {
     getSubjectDataFromForm() {
         return new Subject({
             id: this.editMode ? this.editId : Date.now(),
-            department: this.departmentInput.value,
+            department: this.getCheckedValues("departments"),
             subjectName: this.subjectNameInput.value,
+        });
+    }
+
+    getCheckedValues(name) {
+        return [...this.form.querySelectorAll(`input[name="${name}"]:checked`)]
+            .map((input) => input.value);
+    }
+
+    setCheckedValues(name, values) {
+        const selectedValues = Array.isArray(values) ? values : [values].filter(Boolean);
+
+        this.form.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
+            input.checked = selectedValues.includes(input.value);
         });
     }
 
@@ -142,10 +164,11 @@ class SubjectManager {
         subjectList.innerHTML = "";
         this.subjects.forEach((subject) => {
             const li = document.createElement("li");
+            const departmentText = subject.department.join(", ");
             li.innerHTML = `
                 <div>
                     <strong>${subject.subjectName}</strong><br/>
-                    <small>Department: ${subject.department}</small>
+                    <small>Department: ${departmentText}</small>
                 </div>
                 <div>
                     <button onclick="editSubject(${subject.id})">Edit</button>
@@ -154,6 +177,12 @@ class SubjectManager {
             `;
             subjectList.appendChild(li);
         });
+    }
+
+    updateTeacherSubjectOptions() {
+        if (typeof teacherManager !== "undefined") {
+            teacherManager.renderSubjectOptions();
+        }
     }
 
 }
@@ -266,6 +295,7 @@ class TeacherManager {
         this.joinDateInput = document.getElementById("joinDate");
         this.teacherIdInput = document.getElementById("teacherId");
         this.salaryGradeInput = document.getElementById("salaryGrade");
+        this.subjectOptionsContainer = document.getElementById("teacherSubjectsGroup");
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -274,6 +304,7 @@ class TeacherManager {
         if (!this.form || !this.teacherList) return;
 
         this.form.addEventListener("submit", this.handleSubmit);
+        this.renderSubjectOptions();
         this.renderTeachers();
     }
 
@@ -320,6 +351,7 @@ class TeacherManager {
 
         this.saveToStorage();
         this.form.reset();
+        this.renderSubjectOptions();
         this.renderTeachers();
     }
 
@@ -343,6 +375,44 @@ class TeacherManager {
     getCheckedValues(name) {
         return [...this.form.querySelectorAll(`input[name="${name}"]:checked`)]
             .map((input) => input.value);
+    }
+
+    loadAvailableSubjects() {
+        const savedSubjects = JSON.parse(localStorage.getItem("subjects_data")) || [];
+        const subjectNames = savedSubjects.map((subject) => subject.subjectName);
+        const defaultSubjects = [
+            "Mathematics",
+            "English",
+            "Kiswahili",
+            "Biology",
+            "Chemistry",
+            "Physics",
+        ];
+
+        return [...new Set([...defaultSubjects, ...subjectNames])]
+            .filter((subjectName) => subjectName);
+    }
+
+    renderSubjectOptions(selectedSubjects = this.getCheckedValues("subjects")) {
+        if (!this.subjectOptionsContainer) return;
+
+        const heading = this.subjectOptionsContainer.querySelector("p");
+        this.subjectOptionsContainer.innerHTML = "";
+        this.subjectOptionsContainer.appendChild(heading);
+
+        this.loadAvailableSubjects().forEach((subjectName) => {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+
+            input.type = "checkbox";
+            input.name = "subjects";
+            input.value = subjectName;
+            input.checked = selectedSubjects.includes(subjectName);
+
+            label.appendChild(input);
+            label.append(` ${subjectName}`);
+            this.subjectOptionsContainer.appendChild(label);
+        });
     }
 
     hasDuplicateTeacherId(teacherId) {
@@ -385,7 +455,7 @@ class TeacherManager {
         this.joinDateInput.value = teacher.joinDate;
         this.teacherIdInput.value = teacher.teacherId;
         this.salaryGradeInput.value = teacher.salaryGrade;
-        this.setCheckedValues("subjects", teacher.subjects);
+        this.renderSubjectOptions(teacher.subjects);
         this.setCheckedValues("classesAssigned", teacher.classesAssigned);
         this.form.querySelector(
             `input[name="status"][value="${teacher.status}"]`,

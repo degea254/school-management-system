@@ -108,8 +108,33 @@
         <div class="form-section">
           <h2>Add / Edit Subject</h2>
           <form id="subjectForm">
-            <label for="department">Department</label>
-            <input type="text" id="department" placeholder="e.g. Science" required />
+            <div class="department-group">
+              <p>Department</p>
+              <label>
+                <input type="checkbox" name="departments" value="Science" />
+                Science
+              </label>
+              <label>
+                <input type="checkbox" name="departments" value="Humanities" />
+                Humanities
+              </label>
+              <label>
+                <input type="checkbox" name="departments" value="Languages" />
+                Languages
+              </label>
+              <label>
+                <input type="checkbox" name="departments" value="Mathematics" />
+                Mathematics
+              </label>
+              <label>
+                <input type="checkbox" name="departments" value="Technical" />
+                Technical
+              </label>
+              <label>
+                <input type="checkbox" name="departments" value="Creative Arts" />
+                Creative Arts
+              </label>
+            </div>
             <label for="subjectName">Subject Name</label>
             <input type="text" id="subjectName" placeholder="e.g. Mathematics" required />
             <div class="subject-actions">
@@ -157,38 +182,8 @@
             <label for="teacherId">ID number</label>
             <input type="number" id="teacherId" placeholder="ID number" required min="20000000" step="1" />
 
-            <div class="subjects-group">
+            <div class="subjects-group" id="teacherSubjectsGroup">
               <p>Subjects</p>
-
-              <label>
-                <input type="checkbox" name="subjects" value="Mathematics" />
-                Mathematics
-              </label>
-
-              <label>
-                <input type="checkbox" name="subjects" value="English" />
-                English
-              </label>
-
-              <label>
-                <input type="checkbox" name="subjects" value="Kiswahili" />
-                Kiswahili
-              </label>
-
-              <label>
-                <input type="checkbox" name="subjects" value="Biology" />
-                Biology
-              </label>
-
-              <label>
-                <input type="checkbox" name="subjects" value="Chemistry" />
-                Chemistry
-              </label>
-
-              <label>
-                <input type="checkbox" name="subjects" value="Physics" />
-                Physics
-              </label>
             </div>
 
             <div class="classes-group">

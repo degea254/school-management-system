@@ -218,6 +218,7 @@ textarea:focus {
    GROUP SECTIONS (teacher specific)
 ========================= */
 .subjects-group,
+.department-group,
 .classes-group,
 .status-group {
     background: rgba(10, 10, 20, 0.6);
@@ -231,6 +232,7 @@ textarea:focus {
 }
 
 .subjects-group p,
+.department-group p,
 .classes-group p,
 .status-group p {
     width: 100%;
@@ -241,6 +243,7 @@ textarea:focus {
 
 /* rectangular label tiles */
 .subjects-group label,
+.department-group label,
 .classes-group label,
 .status-group label {
     display: inline-flex;
@@ -256,6 +259,7 @@ textarea:focus {
 }
 
 .subjects-group label:hover,
+.department-group label:hover,
 .classes-group label:hover,
 .status-group label:hover {
     border-color: var(--accent);
