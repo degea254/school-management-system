@@ -25,8 +25,8 @@ class Subject {
     constructor({ id, department, subjectName }) {
         this.id = id || Date.now();
         this.department = Array.isArray(department)
-            ? department
-            : [String(department || "").trim()].filter(Boolean);
+            ? department[0] || ""
+            : String(department || "").trim();
         this.subjectName = subjectName.trim();
     }
 
@@ -78,8 +78,8 @@ class SubjectManager {
 
         const subjectData = this.getSubjectDataFromForm();
 
-        if (subjectData.department.length === 0) {
-            alert("Please select at least one department.");
+        if (!subjectData.department) {
+            alert("Please select a department.");
             return;
         }
 
@@ -132,7 +132,7 @@ class SubjectManager {
 
         this.editMode = true;
         this.editId = id;
-        this.setCheckedValues("departments", subject.department);
+        this.setCheckedValue("department", subject.department);
         this.subjectNameInput.value = subject.subjectName;
 
         this.form.querySelector("button").textContent = "Update Subject";
@@ -141,21 +141,21 @@ class SubjectManager {
     getSubjectDataFromForm() {
         return new Subject({
             id: this.editMode ? this.editId : Date.now(),
-            department: this.getCheckedValues("departments"),
+            department: this.getCheckedValue("department"),
             subjectName: this.subjectNameInput.value,
         });
     }
 
-    getCheckedValues(name) {
-        return [...this.form.querySelectorAll(`input[name="${name}"]:checked`)]
-            .map((input) => input.value);
+    getCheckedValue(name) {
+        const selectedInput = this.form.querySelector(`input[name="${name}"]:checked`);
+        return selectedInput ? selectedInput.value : "";
     }
 
-    setCheckedValues(name, values) {
-        const selectedValues = Array.isArray(values) ? values : [values].filter(Boolean);
+    setCheckedValue(name, value) {
+        const selectedValue = Array.isArray(value) ? value[0] : value;
 
         this.form.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
-            input.checked = selectedValues.includes(input.value);
+            input.checked = input.value === selectedValue;
         });
     }
 
@@ -164,11 +164,10 @@ class SubjectManager {
         subjectList.innerHTML = "";
         this.subjects.forEach((subject) => {
             const li = document.createElement("li");
-            const departmentText = subject.department.join(", ");
             li.innerHTML = `
                 <div>
                     <strong>${subject.subjectName}</strong><br/>
-                    <small>Department: ${departmentText}</small>
+                    <small>Department: ${subject.department}</small>
                 </div>
                 <div>
                     <button onclick="editSubject(${subject.id})">Edit</button>
