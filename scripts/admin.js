@@ -21,6 +21,144 @@ class User {
     }
 }
 
+class Subject {
+    constructor({ id, department, subjectName }) {
+        this.id = id || Date.now();
+        this.department = department.trim();
+        this.subjectName = subjectName.trim();
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            department: this.department,
+            subjectName: this.subjectName,
+        };
+    }
+}
+
+//========subject management app========//
+class SubjectManager {
+    constructor() {
+        this.storageKey = "subjects_data";
+
+        this.editMode = false;
+        this.editId = null;
+        this.subjects = this.loadSubjects();
+
+        this.form = document.getElementById("subjectForm");
+        this.subjectList = document.getElementById("subjectList");
+        this.departmentInput = document.getElementById("department");
+        this.subjectNameInput = document.getElementById("subjectName");
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    init() {
+        if (!this.form || !this.subjectList) return;
+
+        this.form.addEventListener("submit", this.handleSubmit);
+        this.renderSubjects();
+    }
+
+    loadSubjects() {
+        const storedSubjects =
+            JSON.parse(localStorage.getItem(this.storageKey)) || [];
+        return storedSubjects.map((subjectData) => new Subject(subjectData));
+    }
+
+    saveToStorage() {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.subjects));
+    }
+
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        const subjectData = this.getSubjectDataFromForm();
+
+        if (this.editMode) {
+            this.updateSubject(subjectData);
+        } else {
+            this.addSubject(subjectData);
+        }
+
+        this.saveToStorage();
+        this.form.reset();
+        this.renderSubjects();
+    }
+
+
+
+
+    addSubject(subject) {
+        this.subjects.push(subject);
+        this.saveToStorage();
+        this.renderSubjects();
+    }
+
+
+    pdateSubject(updatedSubject) {
+        this.subjects = this.subjects.map((subject) =>
+            subject.id === this.editId ? updatedSubject : subject,
+        );
+
+        this.editMode = false;
+        this.editId = null;
+        this.form.querySelector("button").textContent = "Add Subject";
+        this.saveToStorage();
+        this.renderSubjects();
+    }
+
+
+    deleteSubject(id) {
+        this.subjects = this.subjects.filter((subject) => subject.id !== id);
+        this.saveToStorage();
+        this.renderSubjects();
+    }
+
+    editSubject(id) {
+        const subject = this.subjects.find((subjectItem) => subjectItem.id === id);
+        if (!subject) return;
+
+        this.editMode = true;
+        this.editId = id;
+        this.departmentInput.value = subject.department;
+        this.subjectNameInput.value = subject.subjectName;
+
+        this.form.querySelector("button").textContent = "Update Subject";
+    }
+
+    getSubjectDataFromForm() {
+        return new Subject({
+            id: this.editMode ? this.editId : Date.now(),
+            department: this.departmentInput.value,
+            subjectName: this.subjectNameInput.value,
+        });
+    }
+
+    renderSubjects() {
+        const subjectList = document.getElementById("subjectList");
+        subjectList.innerHTML = "";
+        this.subjects.forEach((subject) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <div>
+                    <strong>${subject.subjectName}</strong><br/>
+                    <small>Department: ${subject.department}</small>
+                </div>
+                <div>
+                    <button onclick="editSubject(${subject.id})">Edit</button>
+                    <button onclick="deleteSubject(${subject.id})">Delete</button>
+                </div>
+            `;
+            subjectList.appendChild(li);
+        });
+    }
+
+}
+
+
 class Student extends User {
     constructor({
         id,
@@ -223,6 +361,10 @@ class TeacherManager {
         this.editMode = false;
         this.editId = null;
         this.form.querySelector("button").textContent = "Add Teacher";
+
+        this.saveToStorage();
+        this.renderTeachers();
+
     }
 
     deleteTeacher(id) {
@@ -475,6 +617,9 @@ studentManager.init();
 const teacherManager = new TeacherManager();
 teacherManager.init();
 
+const subjectManager = new SubjectManager();
+subjectManager.init();
+
 // Keep the existing inline HTML button capabilities working.
 function editStudent(id) {
     studentManager.editStudent(id);
@@ -490,4 +635,12 @@ function editTeacher(id) {
 
 function deleteTeacher(id) {
     teacherManager.deleteTeacher(id);
+}
+
+function editSubject(id) {
+    subjectManager.editSubject(id);
+}
+
+function deleteSubject(id) {
+    subjectManager.deleteSubject(id);
 }

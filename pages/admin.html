@@ -108,12 +108,13 @@
         <div class="form-section">
           <h2>Add / Edit Subject</h2>
           <form id="subjectForm">
-            <input type="hidden" id="subjectId" />
+            <label for="department">Department</label>
+            <input type="text" id="department" placeholder="e.g. Science" required />
             <label for="subjectName">Subject Name</label>
             <input type="text" id="subjectName" placeholder="e.g. Mathematics" required />
             <div class="subject-actions">
               <button type="submit" id="subjectSubmit" class="primary-btn">Add Subject</button>
-              <button type="button" id="subjectCancel" class="hidden">Cancel</button>
+
             </div>
           </form>
         </div>
